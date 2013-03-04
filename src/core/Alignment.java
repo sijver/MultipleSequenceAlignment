@@ -17,24 +17,24 @@ public class Alignment {
 //        for(Protein p : proteins){
 //            System.out.println(p.toString());
 //        }
-        SubstitutionMatrixReader smr = new SubstitutionMatrixReader("pam250.bla");
+        SubstitutionMatrixReader smr = new SubstitutionMatrixReader("pam120.bla");
         SubstitutionMatrix sm = smr.processFile();
 //        for(String s : sm.getAminoacids()){
 //            System.out.println(s);
 //        }
 //        System.out.println(sm.getAminoacids().size());
 //
-//        int[][] m = sm.getSubstitutionMatrix();
-//        for(int[] d : m){
-//            System.out.println(Arrays.toString(d));
-//        }
-        NeedlemanWunsch nw = new NeedlemanWunsch(proteins.get(0), proteins.get(1), sm, -14);
-        nw.computeAlignments();
+        int[][] m = sm.getSubstitutionMatrix();
+        for(int[] d : m){
+            System.out.println(Arrays.toString(d));
+        }
+        NeedlemanWunsch nw = new NeedlemanWunsch(proteins.get(0), proteins.get(1), sm, -10);
+        nw.computeAlignmentsAffine(-1);
         System.out.println(nw.getAlignment1());
         System.out.println(nw.getAlignment2());
         System.out.println("Score: " + nw.getScore());
 
-        int[][] m = nw.getfMatrix();
+        m = nw.getsMatrix();
         for(int[] i : m){
             System.out.println(Arrays.toString(i));
         }
