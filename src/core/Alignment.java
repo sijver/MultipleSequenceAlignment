@@ -1,5 +1,6 @@
 package core;
 
+import core.algorithm.SmithWatermanAffine;
 import core.io.FastaReader;
 import core.io.SubstitutionMatrixReader;
 
@@ -17,7 +18,7 @@ public class Alignment {
 //        for(Protein p : proteins){
 //            System.out.println(p.toString());
 //        }
-        SubstitutionMatrixReader smr = new SubstitutionMatrixReader("pam120.bla");
+        SubstitutionMatrixReader smr = new SubstitutionMatrixReader("blosum62.bla");
         SubstitutionMatrix sm = smr.processFile();
 //        for(String s : sm.getAminoacids()){
 //            System.out.println(s);
@@ -25,21 +26,24 @@ public class Alignment {
 //        System.out.println(sm.getAminoacids().size());
 //
         int[][] m = sm.getSubstitutionMatrix();
-        for(int[] d : m){
-            System.out.println(Arrays.toString(d));
-        }
-        NeedlemanWunsch nw = new NeedlemanWunsch(proteins.get(0), proteins.get(1), sm, -10);
-        nw.computeAlignmentsAffine(-1);
-        System.out.println(nw.getAlignment1());
-        System.out.println(nw.getAlignment2());
-        System.out.println("Score: " + nw.getScore());
+//        for(int[] d : m){
+//            System.out.println(Arrays.toString(d));
+//        }
+        SmithWatermanAffine algorithm = new SmithWatermanAffine(proteins.get(0), proteins.get(1), sm, -10);
+//        nw.setSemiGlobal(false);
+        algorithm.setExtendingGap(-1);
+        algorithm.computeAlignments();
+        System.out.println(algorithm.getAlignment1());
+        System.out.println(algorithm.getAlignment2());
+        System.out.println("Score: " + algorithm.getScore());
 
-        m = nw.getsMatrix();
+
+        m = algorithm.getSMatrix();
         for(int[] i : m){
             System.out.println(Arrays.toString(i));
         }
-        System.out.println(String.format("Identical positions: %d", nw.getIdenticalPositions()));
-        System.out.println(String.format("Identity: %,.3f%%", nw.getIdentity() * 100));
+        System.out.println(String.format("Identical positions: %d", algorithm.getIdenticalPositions()));
+        System.out.println(String.format("Identity: %,.3f%%", algorithm.getIdentity() * 100));
 
 
 
