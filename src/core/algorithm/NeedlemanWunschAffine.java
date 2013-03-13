@@ -30,9 +30,13 @@ public class NeedlemanWunschAffine extends AlignmentAlgorithmAbstract implements
         if (!isSemiGlobal) {
             for (int i = 1; i < protein1.getProteinString().length() + 1; i++) {
                 sMatrix[i][0] = gapPenalty + extendingGap * (i - 1);
+                vMatrix[i][0] = gapPenalty + extendingGap * (i - 1);
+                wMatrix[i][0] = gapPenalty + extendingGap * (i - 1);
             }
             for (int j = 1; j < protein2.getProteinString().length() + 1; j++) {
                 sMatrix[0][j] = gapPenalty + extendingGap * (j - 1);
+                vMatrix[0][j] = gapPenalty + extendingGap * (j - 1);
+                wMatrix[0][j] = gapPenalty + extendingGap * (j - 1);
             }
         }
 

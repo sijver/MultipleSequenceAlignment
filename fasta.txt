@@ -1,4 +1,4 @@
->sp|Q6B0K9|HBM_HUMAN Hemoglobin subunit mu OS=Homo sapiens GN=HBM PE=2 SV=1
-THISLINEISALIGNED
->sp|P69905|HBA_HUMAN Hemoglobin subunit alpha OS=Homo sapiens GN=HBA1 PE=1 SV=2
-ALILINEISGNILALALA
+>sp|P68871|HBB_HUMAN Hemoglobin subunit beta OS=Homo sapiens GN=HBB PE=1 SV=2
+MVHLTPEEKS
+>sp|P02008|HBAZ_HUMAN Hemoglobin subunit zeta OS=Homo sapiens GN=HBZ PE=1 SV=2
+MSLTKTERTI

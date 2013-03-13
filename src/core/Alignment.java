@@ -1,5 +1,6 @@
 package core;
 
+import core.algorithm.NeedlemanWunschAffine;
 import core.algorithm.SmithWatermanAffine;
 import core.io.FastaReader;
 import core.io.SubstitutionMatrixReader;
@@ -29,8 +30,8 @@ public class Alignment {
 //        for(int[] d : m){
 //            System.out.println(Arrays.toString(d));
 //        }
-        SmithWatermanAffine algorithm = new SmithWatermanAffine(proteins.get(0), proteins.get(1), sm, -10);
-//        nw.setSemiGlobal(false);
+        NeedlemanWunschAffine algorithm = new NeedlemanWunschAffine(proteins.get(0), proteins.get(1), sm, -10);
+        algorithm.setSemiGlobal(false);
         algorithm.setExtendingGap(-1);
         algorithm.computeAlignments();
         System.out.println(algorithm.getAlignment1());
