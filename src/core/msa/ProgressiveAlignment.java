@@ -124,18 +124,13 @@ public class ProgressiveAlignment {
             for(int i = 0; i < clustersList.size(); i++){
                 for(int j = i + 1; j < clustersList.size(); j++){
                     clustersDistance = clusterClusterDistance(clustersList.get(i), clustersList.get(j));
-                    System.out.println("cld "+i+ "  "+j+"   "+clustersDistance);
                     if(clustersDistance < clustersMinDistance){
                         clusterMinNum1 = i;
-                        System.out.println(clusterMinNum1+"aaaaaaaa");
                         clusterMinNum2 = j;
                         clustersMinDistance = clustersDistance;
                     }
                 }
             }
-            System.out.println(clustersList.size()+"size");
-            System.out.println(clusterMinNum1);
-            System.out.println(clusterMinNum2);
             Cluster newCluster = new Cluster();
             newCluster.addObjectToCluster(clustersList.get(clusterMinNum1));
             newCluster.addObjectToCluster(clustersList.get(clusterMinNum2));
