@@ -132,8 +132,16 @@ public class ProgressiveAlignment {
                 }
             }
             Cluster newCluster = new Cluster();
-            newCluster.addObjectToCluster(clustersList.get(clusterMinNum1));
-            newCluster.addObjectToCluster(clustersList.get(clusterMinNum2));
+            if(clustersList.get(clusterMinNum1).getClusterObjects().size() == 1){
+                newCluster.addObjectToCluster(clustersList.get(clusterMinNum1).getClusterObjects().get(0));
+            } else {
+                newCluster.addObjectToCluster(clustersList.get(clusterMinNum1));
+            }
+            if(clustersList.get(clusterMinNum2).getClusterObjects().size() == 1){
+                newCluster.addObjectToCluster(clustersList.get(clusterMinNum2).getClusterObjects().get(0));
+            } else {
+                newCluster.addObjectToCluster(clustersList.get(clusterMinNum2));
+            }
             clustersList.remove(clustersList.get(clusterMinNum1));
             clustersList.remove(clustersList.get(clusterMinNum2 - 1));
             clustersList.add(newCluster);
