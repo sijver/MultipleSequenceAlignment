@@ -39,9 +39,9 @@ public class ProgressiveAlignment {
 
     private void initClustersList() {
         clustersList = new LinkedList<Cluster>();
-        for (int i = 0; i < proteins.size(); i++) {
+        for (Protein protein : proteins) {
             Cluster newCluster = new Cluster();
-            newCluster.addObjectToCluster(i);
+            newCluster.addObjectToCluster(protein);
             clustersList.add(newCluster);
         }
     }
@@ -100,12 +100,12 @@ public class ProgressiveAlignment {
     }
 
     private double clusterClusterDistance(Cluster cluster1, Cluster cluster2){
-        List<Integer> clusterProteins1 = Cluster.getClusterProteins(cluster1);
-        List<Integer> clusterProteins2 = Cluster.getClusterProteins(cluster2);
+        List<Protein> clusterProteins1 = Cluster.getClusterProteins(cluster1);
+        List<Protein> clusterProteins2 = Cluster.getClusterProteins(cluster2);
         double clustersDistance = Double.MAX_VALUE;
-        for(int proteinNumber1 : clusterProteins1){
-            for(int proteinNumber2 : clusterProteins2){
-                double proteinDistance = distanceMatrix[proteinNumber1][proteinNumber2];
+        for(Protein protein1 : clusterProteins1){
+            for(Protein protein2 : clusterProteins2){
+                double proteinDistance = distanceMatrix[proteins.indexOf(protein1)][proteins.indexOf(protein2)];
                 if(proteinDistance < clustersDistance){
                     clustersDistance = proteinDistance;
                 }

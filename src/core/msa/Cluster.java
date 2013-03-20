@@ -1,5 +1,7 @@
 package core.msa;
 
+import core.Protein;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,16 +24,16 @@ public class Cluster {
         return clusterObjects;
     }
 
-    public static List<Integer> getClusterProteins(Cluster cluster) {
-        List<Integer> integers = new LinkedList<Integer>();
+    public static List<Protein> getClusterProteins(Cluster cluster) {
+        List<Protein> proteins = new LinkedList<Protein>();
         for (Object o : cluster.getClusterObjects()) {
-            if (o.getClass() == Integer.class) {
-                integers.add((Integer) o);
+            if (o.getClass() == Protein.class) {
+                proteins.add((Protein) o);
             } else if (o.getClass() == Cluster.class) {
-                integers.addAll(Cluster.getClusterProteins((Cluster) o));
+                proteins.addAll(Cluster.getClusterProteins((Cluster) o));
             }
         }
-        return integers;
+        return proteins;
     }
 
     public static String getClusterTree(Cluster cluster, int deepness){
@@ -46,7 +48,7 @@ public class Cluster {
             if(o.getClass() == Cluster.class){
                 clusterTree.append(((Cluster)o).getClusterTree((Cluster)o, deepness + 1));
             } else {
-                clusterTree.append(o);
+                clusterTree.append(((Protein)o).getId());
             }
         }
 
