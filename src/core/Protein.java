@@ -39,8 +39,7 @@ public class Protein {
 
     @Override
     public String toString() {
-        return "Dna [id=" + this.id + ", proteinString=" + this.proteinString
-                + "]";
+        return this.proteinString + " (" + this.id + ")";
     }
 
     public static Protein shuffleProtein(Protein protein) {
