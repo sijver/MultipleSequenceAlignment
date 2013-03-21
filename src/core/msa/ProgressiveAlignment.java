@@ -24,6 +24,7 @@ public class ProgressiveAlignment {
     private int[][] randomMatrix;
     private double[][] distanceMatrix;
     private List<Cluster> clustersList;
+    private Cluster rootCluster;
 
     public ProgressiveAlignment(List<Protein> proteinsList, AlgorithmType algorithmType, SubstitutionMatrix substitutionMatrix, int openingGap, int extendingGap) {
         this.proteins = proteinsList;
@@ -146,10 +147,15 @@ public class ProgressiveAlignment {
             clustersList.remove(clustersList.get(clusterMinNum2 - 1));
             clustersList.add(newCluster);
         }
+        rootCluster = clustersList.get(0);
     }
 
     public List<Cluster> getClustersList() {
         return clustersList;
+    }
+
+    public Cluster getRootCluster() {
+        return rootCluster;
     }
 
     public static void main(String[] args) {
@@ -162,8 +168,13 @@ public class ProgressiveAlignment {
         ProgressiveAlignment pa = new ProgressiveAlignment(proteins, AlgorithmType.NEEDLEMAN_WUNSCH_LINEAR, sm, -8, -1);
         pa.constructEvolutionaryTree();
 
-        System.out.println(Cluster.getClusterTree(pa.getClustersList().get(0), 0));
+        System.out.println(Cluster.getClusterTree(pa.getRootCluster(), 0));
 
+        MultipleSequenceAlignment msa = new MultipleSequenceAlignment(10, 1, sm);
+        List<Protein> proteins1 = msa.makeMultipleSequenceAlignment(pa.getRootCluster());
+        for(Protein prot : proteins1){
+            System.out.println(prot.getProteinString());
+        }
     }
 
 }
