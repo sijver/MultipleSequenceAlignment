@@ -3,6 +3,7 @@ package core.msa;
 import core.Protein;
 import core.SubstitutionMatrix;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,6 +47,22 @@ public class MultipleSequenceAlignment {
         double[][] memoryD1 = new double[I + 1][J + 1];
         double[][] memoryD2 = new double[I + 1][J + 1];
         double[][] memoryD3 = new double[I + 1][J + 1];
+        int[][] backtrack = new int[I+1][J+1];
+
+
+        memoryD1[0][0] = -100000;
+        memoryD2[0][0] = -100000;
+        for (int i = 1; i < I + 1; i++) {
+            memoryD1[i][0] -= openingGap + extendingGap * (i - 1);
+            memoryD2[i][0] -= 100000;
+            memoryD3[i][0] -= 100000;
+        }
+        for (int j = 1; j < J + 1; j++) {
+            memoryD1[0][j] -= openingGap + extendingGap * (j - 1);
+            memoryD2[0][j] -= 100000;
+            memoryD3[0][j] -= 100000;
+        }
+
         for (int i = 1; i <= I; i++) {
             for (int j = 1; j <= J; j++) {
                 memoryD1[i][j] = Math.min(memoryD3[i - 1][j] + V, memoryD1[i - 1][j]);
@@ -64,12 +81,22 @@ public class MultipleSequenceAlignment {
                     }
                 }
                 memoryD2[i][j] += sumOfDistances;
-                memoryD3[i][j] = Math.min(Math.min(memoryD1[i - 1][j - 1], memoryD2[i - 1][j - 1]), memoryD3[i - 1][j - 1]);
+
                 sumOfDistances = 0;
                 for (int m = 0; m < M; m++) {
                     for (int n = 0; n < N; n++) {
                         sumOfDistances += aminoAcidDistance(proteinList1.get(m).getProteinString().substring(i - 1, i), proteinList2.get(n).getProteinString().substring(j - 1, j));
                     }
+                }
+                memoryD3[i][j] = Math.min(Math.min(memoryD1[i - 1][j - 1], memoryD2[i - 1][j - 1]), memoryD3[i - 1][j - 1]);
+                if(memoryD3[i][j] == memoryD3[i-1][j-1]){
+                    backtrack[i][j] = 3;
+                } else
+                if(memoryD3[i][j] == memoryD2[i-1][j-1]){
+                    backtrack[i][j] = 2;
+                } else
+                {
+                    backtrack[i][j] = 1;
                 }
                 memoryD3[i][j] += sumOfDistances;
             }
@@ -82,8 +109,22 @@ public class MultipleSequenceAlignment {
 
         int i = I;
         int j = J;
+        System.out.println();
+        System.out.println();
+        for(int[] backtra : backtrack)
+            System.out.println(Arrays.toString(backtra));
         while (i > 0 && j > 0) {
-            if (memoryD1[i - 1][j - 1] <= memoryD2[i - 1][j - 1] && memoryD1[i - 1][j - 1] <= memoryD3[i - 1][j - 1]) {
+            if(backtrack[i][j] == 3){
+                for (int k = 0; k < M + N; k++) {
+                    if (k < M) {
+                        listOfProteinAcids.get(k).append(proteinList1.get(k).getProteinString().substring(i - 1, i));
+                    } else {
+                        listOfProteinAcids.get(k).append(proteinList2.get(k - M).getProteinString().substring(j - 1, j));
+                    }
+                }
+                i--;
+                j--;
+            } else if (backtrack[i][j] == 1) {
                 for (int k = 0; k < M + N; k++) {
                     if (k < M) {
                         listOfProteinAcids.get(k).append(proteinList1.get(k).getProteinString().substring(i - 1, i));
@@ -92,24 +133,14 @@ public class MultipleSequenceAlignment {
                     }
                 }
                 i--;
-            } else if (memoryD2[i - 1][j - 1] <= memoryD1[i - 1][j - 1] && memoryD2[i - 1][j - 1] <= memoryD3[i - 1][j - 1]) {
-                for (int k = 0; k < M + N; k++) {
-                    if (k < M) {
-                        listOfProteinAcids.get(k).append("-");
-                    } else {
-                        listOfProteinAcids.get(k).append(proteinList2.get(k - M).getProteinString().substring(j - 1, j));
-                    }
-                }
-                j--;
             } else {
                 for (int k = 0; k < M + N; k++) {
                     if (k < M) {
-                        listOfProteinAcids.get(k).append(proteinList1.get(k).getProteinString().substring(i - 1, i));
+                        listOfProteinAcids.get(k).append("-");
                     } else {
                         listOfProteinAcids.get(k).append(proteinList2.get(k - M).getProteinString().substring(j - 1, j));
                     }
                 }
-                i--;
                 j--;
             }
         }

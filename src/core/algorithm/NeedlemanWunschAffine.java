@@ -28,15 +28,17 @@ public class NeedlemanWunschAffine extends AlignmentAlgorithmAbstract implements
 
         //Matrix initialization
         if (!isSemiGlobal) {
+            vMatrix[0][0] = -100000;
+            wMatrix[0][0] = -100000;
             for (int i = 1; i < protein1.getProteinString().length() + 1; i++) {
-                sMatrix[i][0] = gapPenalty + extendingGap * (i - 1);
                 vMatrix[i][0] = gapPenalty + extendingGap * (i - 1);
-                wMatrix[i][0] = gapPenalty + extendingGap * (i - 1);
+                sMatrix[i][0] = -100000;
+                wMatrix[i][0] = -100000;
             }
             for (int j = 1; j < protein2.getProteinString().length() + 1; j++) {
-                sMatrix[0][j] = gapPenalty + extendingGap * (j - 1);
-                vMatrix[0][j] = gapPenalty + extendingGap * (j - 1);
                 wMatrix[0][j] = gapPenalty + extendingGap * (j - 1);
+                sMatrix[0][j] = -100000;
+                vMatrix[0][j] = -100000;
             }
         }
 
@@ -44,7 +46,7 @@ public class NeedlemanWunschAffine extends AlignmentAlgorithmAbstract implements
             for (int j = 1; j < protein2.getProteinString().length() + 1; j++) {
                 vMatrix[i][j] = Math.max(sMatrix[i - 1][j] + gapPenalty, vMatrix[i - 1][j] + extendingGap);
                 wMatrix[i][j] = Math.max(sMatrix[i][j - 1] + gapPenalty, wMatrix[i][j - 1] + extendingGap);
-                sMatrix[i][j] = Math.max(Math.max(vMatrix[i][j], wMatrix[i][j]), sMatrix[i - 1][j - 1] + getAlignment(protein1.getProteinString().substring(i - 1, i), protein2.getProteinString().substring(j - 1, j)));
+                sMatrix[i][j] = Math.max(Math.max(vMatrix[i - 1][j - 1], wMatrix[i - 1][j - 1]), sMatrix[i - 1][j - 1]) + getAlignment(protein1.getProteinString().substring(i - 1, i), protein2.getProteinString().substring(j - 1, j));
             }
         }
 
@@ -89,10 +91,10 @@ public class NeedlemanWunschAffine extends AlignmentAlgorithmAbstract implements
 
         while (i > 0 && j > 0) {
             int score = sMatrix[i][j];
-            int diagScore = sMatrix[i - 1][j - 1];
-            int upScore = wMatrix[i][j];
-            int leftScore = vMatrix[i][j];
-            if (score == diagScore + getAlignment(protein1.getProteinString().substring(i - 1, i), protein2.getProteinString().substring(j - 1, j))) {
+            int diagScore = sMatrix[i - 1][j - 1] + getAlignment(protein1.getProteinString().substring(i - 1, i), protein2.getProteinString().substring(j - 1, j));
+            int upScore = wMatrix[i - 1][j - 1] + getAlignment(protein1.getProteinString().substring(i - 1, i), protein2.getProteinString().substring(j - 1, j));
+            int leftScore = vMatrix[i - 1][j - 1] + getAlignment(protein1.getProteinString().substring(i - 1, i), protein2.getProteinString().substring(j - 1, j));
+            if (score == diagScore) {
                 alignment1List.add(protein1.getProteinString().substring(i - 1, i));
                 alignment2List.add(protein2.getProteinString().substring(j - 1, j));
                 i--;

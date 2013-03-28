@@ -22,6 +22,7 @@ public class Alignment {
         SubstitutionMatrixReader smr = new SubstitutionMatrixReader("blosum62.bla");
         SubstitutionMatrix sm = smr.processFile();
 //        for(String s : sm.getAminoacids()){
+
 //            System.out.println(s);
 //        }
 //        System.out.println(sm.getAminoacids().size());

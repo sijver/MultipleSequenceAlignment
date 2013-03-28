@@ -170,10 +170,10 @@ public class ProgressiveAlignment {
 
         System.out.println(Cluster.getClusterTree(pa.getRootCluster(), 0));
 
-        MultipleSequenceAlignment msa = new MultipleSequenceAlignment(10, 1, sm);
+        MultipleSequenceAlignment msa = new MultipleSequenceAlignment(10, 4, sm);
         List<Protein> proteins1 = msa.makeMultipleSequenceAlignment(pa.getRootCluster());
         for(Protein prot : proteins1){
-            System.out.println(prot.getProteinString());
+            System.out.println(prot.getProteinString()+" ("+prot.getId()+")");
         }
     }
 
