@@ -109,10 +109,10 @@ public class MultipleSequenceAlignment {
 
         int i = I;
         int j = J;
-        System.out.println();
-        System.out.println();
-        for(int[] backtra : backtrack)
-            System.out.println(Arrays.toString(backtra));
+//        System.out.println();
+//        System.out.println();
+//        for(int[] backtra : backtrack)
+//            System.out.println(Arrays.toString(backtra));
         while (i > 0 && j > 0) {
             if(backtrack[i][j] == 3){
                 for (int k = 0; k < M + N; k++) {

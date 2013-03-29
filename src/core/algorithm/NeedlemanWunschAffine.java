@@ -50,15 +50,15 @@ public class NeedlemanWunschAffine extends AlignmentAlgorithmAbstract implements
             }
         }
 
-        System.out.println("v");
-        for(int[] i : vMatrix){
-            System.out.println(Arrays.toString(i));
-        }
+//        System.out.println("v");
+//        for(int[] i : vMatrix){
+//            System.out.println(Arrays.toString(i));
+//        }
 
-        System.out.println("w");
-        for(int[] i : wMatrix){
-            System.out.println(Arrays.toString(i));
-        }
+//        System.out.println("w");
+//        for(int[] i : wMatrix){
+//            System.out.println(Arrays.toString(i));
+//        }
     }
 
     public void computeAlignments() {
