@@ -97,14 +97,16 @@ public class Start {
         if (isMSA) {
             ProgressiveAlignment progressiveAlignment = new ProgressiveAlignment(proteins, AlgorithmType.NEEDLEMAN_WUNSCH_LINEAR, sm, openingGap * -1, extendingGap * -1);
             progressiveAlignment.constructEvolutionaryTree();
-
+            System.out.println("\nGuide tree: ");
             System.out.println(Cluster.getClusterTree(progressiveAlignment.getRootCluster(), 0));
 
+            System.out.println("\nAlignment: ");
             MultipleSequenceAlignment msa = new MultipleSequenceAlignment(openingGap, extendingGap, sm);
             List<Protein> proteins1 = msa.makeMultipleSequenceAlignment(progressiveAlignment.getRootCluster());
             for (Protein prot : proteins1) {
                 System.out.println(prot.getProteinString() + " (" + prot.getId() + ")");
             }
+            System.out.println();
         } else {
             if (chosenAlgorithm == AlgorithmType.NEEDLEMAN_WUNSCH_LINEAR) {
                 algorithm = new NeedlemanWunschLinear(proteins.get(0), proteins.get(1), sm, openingGap * -1);
@@ -120,11 +122,13 @@ public class Start {
                 algorithm = new SmithWatermanLinear(proteins.get(0), proteins.get(1), sm, openingGap * -1);
             }
             algorithm.computeAlignments();
+            System.out.println("\nAlignment: \n");
             System.out.println(algorithm.getAlignment1() + " (" + proteins.get(0).getId() + ")");
             System.out.println(algorithm.getAlignment2() + " (" + proteins.get(1).getId() + ")");
-            System.out.println("Score: " + algorithm.getScore());
+            System.out.println("\nScore: " + algorithm.getScore());
             System.out.println(String.format("Identical positions: %d", algorithm.getIdenticalPositions()));
             System.out.println(String.format("Identity: %,.3f%%", algorithm.getIdentity() * 100));
+            System.out.println();
         }
     }
 
